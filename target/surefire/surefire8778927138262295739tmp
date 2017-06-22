@@ -1,0 +1,7 @@
+#surefire
+#Thu Jun 22 16:59:04 CDT 2017
+maven.ext.class.path=C\:\\Program Files\\NetBeans 8.2\\java\\maven-nblib\\netbeans-eventspy.jar
+user.dir=C\:\\Users\\Andres\\Documents\\NetBeansProjects\\spring2
+localRepository=C\:\\Users\\Andres\\.m2\\repository
+basedir=C\:\\Users\\Andres\\Documents\\NetBeansProjects\\spring2
+test=com.iwa.controllerTest.MathematicsControllerTest
