@@ -7,7 +7,8 @@ app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
     $scope.mathematicsArray = [];
     var userAPI = new REST(mainURL, "mathematics");
     userAPI.getData($scope.mathematicsArray);
-
+    
+    
     $scope.registraMathematics = function(){
         //InsertarStatistics
     };
@@ -18,6 +19,8 @@ app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
     $scope.gAno = function(cadena){ return ano(cadena); };
     
     // **** Chart section **** //
+    $scope.gender="TOT";
+    
     $scope.getDataCountry = function (gender, country ) {
       $scope.dataArray =[];
       var i = 0;
@@ -82,7 +85,7 @@ app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
         graphMathematics($scope.getData("TOT"));
                 
     }, 7000 );
-    
+   
     $scope.charting = function (i) {
         $scope.gender = i;
         $("graph").empty(); 

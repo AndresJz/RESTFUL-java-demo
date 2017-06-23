@@ -30,7 +30,7 @@
             </tr>
             <tr>
                 <td>Indicator</td>
-                <td><form:input path="indicator_m"class="form-control" required="" /></td>
+                <td><form:input path="indicator_m" class="form-control" required="" /></td>
             </tr>
             <tr>
                 <td>Subject</td>
@@ -38,7 +38,7 @@
             </tr>
             <tr>
                 <td>Measure</td>
-                <td><form:input path="measure"class="form-control" required=""/></td>
+                <td><form:input path="measure" class="form-control" required=""/></td>
             </tr>
             <tr>
                 <td>Frequency</td>
@@ -46,7 +46,7 @@
             </tr>
             <tr>
                 <td>Times</td>
-                <td><form:input path="times"class="form-control" required=""/></td>
+                <td><form:input path="times" class="form-control" required=""/></td>
             </tr>
             <tr>
                 <td>Value</td>
