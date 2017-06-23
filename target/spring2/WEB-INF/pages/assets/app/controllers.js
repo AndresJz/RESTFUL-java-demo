@@ -1,5 +1,5 @@
-var mainURL = "/spring2/";
-//var mainURL = "";
+//var mainURL = "/spring2/";
+var mainURL = "";
 
 
 app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
@@ -22,15 +22,17 @@ app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
       $scope.dataArray =[];
       var i = 0;
       var first = "";
+      var currentCountry = "";
       var  structureA = {label: "", x: [], y: []};
       angular.forEach($scope.mathematicsArray, function (value, key) {
         if(value.subject === gender ){  
           if(value.location === first){
               structureA.x.push(value.times);
               structureA.y.push(value.value_m);
+              currentCountry = value.location;
           }
           else{
-            if(first !== "" && value.location === country)
+            if(first !== "" && currentCountry === country)
                 $scope.dataArray.push(structureA);
             
             structureA = {label: "", x: [], y: []};

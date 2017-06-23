@@ -57,7 +57,11 @@
             <button class="btn btn-info" ng-click="charting('TOT')" >TOTAL </button>
             <button class="btn btn-info" ng-click="charting('BOY')" >BOYS </button>
             <button class="btn btn-info" ng-click="charting('GIRL')" >GIRLS </button>
-            <input class="form-control" ng-change="chartingCountry()" ng-model="country">
+            <strong> GENDER: {{gender}}  COUNTRY: {{country}} </strong>
+            
+            <select class="form-control" ng-change="chartingCountry()" ng-model="country" placeholder="Select country">
+                <option ng-repeat="countryM in mathematicsArray | unique:'location'" value="{{countryM.location}}">{{countryM.location}}</option>
+            </select>
         </div>
         <h3>
             <a href="newMathematic">Nuevo registro</a>
