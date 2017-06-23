@@ -128,3 +128,10 @@ It works with a Json file like this:
 
 The dataset was obtained from:
 https://data.oecd.org/pisa/mathematics-performance-pisa.htm
+
+### Test
+I have added some tests for review if CRUD working fine, but only GET request, if it is necessary in the future i will add more specific test using Restassured
+
+### Graphs
+
+I have added a final version to the git, with a experimental version with export to image, basically It works but also the function creates a Black background, I would like to check this bug with more time. (Export image has not been included in Demo page)
