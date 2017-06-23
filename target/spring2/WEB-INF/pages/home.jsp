@@ -56,12 +56,14 @@
         <div class="col-md-12">
             <button class="btn btn-info" ng-click="charting('TOT')" >TOTAL </button>
             <button class="btn btn-info" ng-click="charting('BOY')" >BOYS </button>
-            <button class="btn btn-info" ng-click="charting('GIRL')" >GIRLS </button>
+            <button class="btn btn-info" ng-click="charting('GIRL')" >GIRLS  </button>
             <strong> GENDER: {{gender}}  COUNTRY: {{country}} </strong>
             
             <select class="form-control" ng-change="chartingCountry()" ng-model="country" placeholder="Select country">
                 <option ng-repeat="countryM in mathematicsArray | unique:'location'" value="{{countryM.location}}">{{countryM.location}}</option>
             </select>
+            
+            <button class="btn btn-info" onclick="svgToCanvas()" >Exportar Imagen </button>
         </div>
         <h3>
             <a href="newMathematic">Nuevo registro</a>
@@ -97,6 +99,38 @@
     <!--script src="http://d3js.org/d3.v3.js"></script-->
     <script  src="<c:url value="/resources/js/d3.v3.js"/>" charset="utf-8"></script>
     <script>
+        // Create an export button
+        /*d3.select("body")
+            .append("button")
+            .html("Export")
+            .on("click",svgToCanvas);*/
+
+        var w = 1000, // or whatever your svg width is
+            h = 850;
+
+        // Create the export function - this will just export 
+        // the first svg element it finds
+        function svgToCanvas(){
+            // Select the first svg element
+            var svg = d3.select("svg")[0][0],
+                img = new Image(),
+                serializer = new XMLSerializer(),
+                svgStr = serializer.serializeToString(svg);
+            console.log(svg);    
+            img.src = 'data:image/svg+xml;base64,'+window.btoa(svgStr);
+            console.log(img.src);
+            // You could also use the actual string without base64 encoding it:
+            //img.src = "data:image/svg+xml;utf8," + svgStr;
+
+            var canvas = document.createElement("canvas");
+            document.body.appendChild(canvas);
+
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext("2d").drawImage(img,0,0,w,h);
+            // Now save as png or whatever
+        };
+        
         function graphMathematics(data){
             /*
             var data = [ { label: "Data Set 1", 

@@ -1,5 +1,5 @@
-//var mainURL = "/spring2/";
-var mainURL = "";
+var mainURL = "/spring2/";
+//var mainURL = "";
 
 
 app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
