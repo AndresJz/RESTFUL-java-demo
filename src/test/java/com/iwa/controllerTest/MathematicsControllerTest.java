@@ -42,7 +42,6 @@ public class MathematicsControllerTest {
         given().when().get("/spring2/Mathematics").then().assertThat().contentType(ContentType.JSON);
     }
     
-    
     @Test 
     public void getMathematicTest() {
         given().when().get("/spring2/Mathematics/1").then().statusCode(200).
