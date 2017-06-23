@@ -50,7 +50,15 @@
     {{prueba}}
     <div align="center">
         <h1>Average PISA test by Country</h1>
+        <div class="col-md-12">
         <graph style="background: #fff"></graph>
+        </div>
+        <div class="col-md-12">
+            <button class="btn btn-info" ng-click="charting('TOT')" >TOTAL </button>
+            <button class="btn btn-info" ng-click="charting('BOY')" >BOYS </button>
+            <button class="btn btn-info" ng-click="charting('GIRL')" >GIRLS </button>
+            <input class="form-control" ng-change="chartingCountry()" ng-model="country">
+        </div>
         <h3>
             <a href="newMathematic">Nuevo registro</a>
         </h3>
@@ -82,7 +90,8 @@
     </div>
     
 
-    <script src="/resources/js/d3.v3.js"></script>
+    <!--script src="http://d3js.org/d3.v3.js"></script-->
+    <script  src="<c:url value="/resources/js/d3.v3.js"/>" charset="utf-8"></script>
     <script>
         function graphMathematics(data){
             /*

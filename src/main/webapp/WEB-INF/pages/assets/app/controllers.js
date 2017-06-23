@@ -1,5 +1,5 @@
-//var mainURL = "/spring2/";
-var mainURL = "";
+var mainURL = "/spring2/";
+//var mainURL = "";
 
 
 app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
@@ -18,20 +18,49 @@ app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
     $scope.gAno = function(cadena){ return ano(cadena); };
     
     // **** Chart section **** //
-    $scope.getData = function () {
+    $scope.getDataCountry = function (gender, country ) {
       $scope.dataArray =[];
       var i = 0;
       var first = "";
       var  structureA = {label: "", x: [], y: []};
       angular.forEach($scope.mathematicsArray, function (value, key) {
-        if(value.subject === "BOY"){  
+        if(value.subject === gender ){  
           if(value.location === first){
               structureA.x.push(value.times);
               structureA.y.push(value.value_m);
           }
           else{
-            if(first !== "" )
+            if(first !== "" && value.location === country)
                 $scope.dataArray.push(structureA);
+            
+            structureA = {label: "", x: [], y: []};
+            
+            first = value.location;
+            structureA.label = value.location;
+            structureA.x.push(value.times);
+            structureA.y.push(value.value_m);
+          }
+        }
+      });
+	  //console.log(backgroundColours);
+      return $scope.dataArray;
+    };
+    
+    $scope.getData = function (gender ) {
+      $scope.dataArray =[];
+      var i = 0;
+      var first = "";
+      var  structureA = {label: "", x: [], y: []};
+      angular.forEach($scope.mathematicsArray, function (value, key) {
+        if(value.subject === gender ){  
+          if(value.location === first){
+              structureA.x.push(value.times);
+              structureA.y.push(value.value_m);
+          }
+          else{
+            if(first !== "")
+                $scope.dataArray.push(structureA);
+            
             structureA = {label: "", x: [], y: []};
             
             first = value.location;
@@ -48,8 +77,19 @@ app.controller('mainCtrl', function($scope, $timeout, $http, $sce, REST) {
     $timeout( function(){
         //var data = $scope.getData();
         
-        graphMathematics($scope.getData());
+        graphMathematics($scope.getData("TOT"));
                 
     }, 7000 );
-
+    
+    $scope.charting = function (i) {
+        $scope.gender = i;
+        $("graph").empty(); 
+        graphMathematics($scope.getData(i));
+        $scope.country = "";
+    }
+    
+    $scope.chartingCountry = function () {
+        $("graph").empty(); 
+        graphMathematics($scope.getDataCountry($scope.gender, $scope.country));
+    }
 });

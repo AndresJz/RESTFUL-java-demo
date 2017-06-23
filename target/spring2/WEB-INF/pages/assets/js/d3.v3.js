@@ -1258,7 +1258,7 @@
       return point;
     }) : [];
   };
-  var ? = 1e-6, ?2 = ? * ?, ? = Math.PI, ? = 2 * ?, ?? = ? - ?, half? = ? / 2, d3_radians = ? / 180, d3_degrees = 180 / ?;
+  var ε = 1e-6, ε2 = ε * ε, π = Math.PI, τ = 2 * π, τε = τ - ε, halfπ = π / 2, d3_radians = π / 180, d3_degrees = 180 / π;
   function d3_sgn(x) {
     return x > 0 ? 1 : x < 0 ? -1 : 0;
   }
@@ -1266,10 +1266,10 @@
     return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
   }
   function d3_acos(x) {
-    return x > 1 ? 0 : x < -1 ? ? : Math.acos(x);
+    return x > 1 ? 0 : x < -1 ? π : Math.acos(x);
   }
   function d3_asin(x) {
-    return x > 1 ? half? : x < -1 ? -half? : Math.asin(x);
+    return x > 1 ? halfπ : x < -1 ? -halfπ : Math.asin(x);
   }
   function d3_sinh(x) {
     return ((x = Math.exp(x)) - 1 / x) / 2;
@@ -1283,20 +1283,20 @@
   function d3_haversin(x) {
     return (x = Math.sin(x / 2)) * x;
   }
-  var ? = Math.SQRT2, ?2 = 2, ?4 = 4;
+  var ρ = Math.SQRT2, ρ2 = 2, ρ4 = 4;
   d3.interpolateZoom = function(p0, p1) {
     var ux0 = p0[0], uy0 = p0[1], w0 = p0[2], ux1 = p1[0], uy1 = p1[1], w1 = p1[2], dx = ux1 - ux0, dy = uy1 - uy0, d2 = dx * dx + dy * dy, i, S;
-    if (d2 < ?2) {
-      S = Math.log(w1 / w0) / ?;
+    if (d2 < ε2) {
+      S = Math.log(w1 / w0) / ρ;
       i = function(t) {
-        return [ ux0 + t * dx, uy0 + t * dy, w0 * Math.exp(? * t * S) ];
+        return [ ux0 + t * dx, uy0 + t * dy, w0 * Math.exp(ρ * t * S) ];
       };
     } else {
-      var d1 = Math.sqrt(d2), b0 = (w1 * w1 - w0 * w0 + ?4 * d2) / (2 * w0 * ?2 * d1), b1 = (w1 * w1 - w0 * w0 - ?4 * d2) / (2 * w1 * ?2 * d1), r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0), r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
-      S = (r1 - r0) / ?;
+      var d1 = Math.sqrt(d2), b0 = (w1 * w1 - w0 * w0 + ρ4 * d2) / (2 * w0 * ρ2 * d1), b1 = (w1 * w1 - w0 * w0 - ρ4 * d2) / (2 * w1 * ρ2 * d1), r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0), r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+      S = (r1 - r0) / ρ;
       i = function(t) {
-        var s = t * S, coshr0 = d3_cosh(r0), u = w0 / (?2 * d1) * (coshr0 * d3_tanh(? * s + r0) - d3_sinh(r0));
-        return [ ux0 + u * dx, uy0 + u * dy, w0 * coshr0 / d3_cosh(? * s + r0) ];
+        var s = t * S, coshr0 = d3_cosh(r0), u = w0 / (ρ2 * d1) * (coshr0 * d3_tanh(ρ * s + r0) - d3_sinh(r0));
+        return [ ux0 + u * dx, uy0 + u * dy, w0 * coshr0 / d3_cosh(ρ * s + r0) ];
       };
     }
     i.duration = S * 1e3;
@@ -2187,7 +2187,7 @@
   d3.round = function(x, n) {
     return n ? Math.round(x * (n = Math.pow(10, n))) / n : Math.round(x);
   };
-  var d3_formatPrefixes = [ "y", "z", "a", "f", "p", "n", "�", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y" ].map(d3_formatPrefix);
+  var d3_formatPrefixes = [ "y", "z", "a", "f", "p", "n", "µ", "m", "", "k", "M", "G", "T", "P", "E", "Z", "Y" ].map(d3_formatPrefix);
   d3.formatPrefix = function(value, precision) {
     var i = 0;
     if (value = +value) {
@@ -2941,7 +2941,7 @@
   var d3_geo_areaSum, d3_geo_areaRingSum = new d3_adder();
   var d3_geo_area = {
     sphere: function() {
-      d3_geo_areaSum += 4 * ?;
+      d3_geo_areaSum += 4 * π;
     },
     point: d3_noop,
     lineStart: d3_noop,
@@ -2952,31 +2952,31 @@
     },
     polygonEnd: function() {
       var area = 2 * d3_geo_areaRingSum;
-      d3_geo_areaSum += area < 0 ? 4 * ? + area : area;
+      d3_geo_areaSum += area < 0 ? 4 * π + area : area;
       d3_geo_area.lineStart = d3_geo_area.lineEnd = d3_geo_area.point = d3_noop;
     }
   };
   function d3_geo_areaRingStart() {
-    var ?00, ?00, ?0, cos?0, sin?0;
-    d3_geo_area.point = function(?, ?) {
+    var λ00, φ00, λ0, cosφ0, sinφ0;
+    d3_geo_area.point = function(λ, φ) {
       d3_geo_area.point = nextPoint;
-      ?0 = (?00 = ?) * d3_radians, cos?0 = Math.cos(? = (?00 = ?) * d3_radians / 2 + ? / 4), 
-      sin?0 = Math.sin(?);
+      λ0 = (λ00 = λ) * d3_radians, cosφ0 = Math.cos(φ = (φ00 = φ) * d3_radians / 2 + π / 4), 
+      sinφ0 = Math.sin(φ);
     };
-    function nextPoint(?, ?) {
-      ? *= d3_radians;
-      ? = ? * d3_radians / 2 + ? / 4;
-      var d? = ? - ?0, sd? = d? >= 0 ? 1 : -1, ad? = sd? * d?, cos? = Math.cos(?), sin? = Math.sin(?), k = sin?0 * sin?, u = cos?0 * cos? + k * Math.cos(ad?), v = k * sd? * Math.sin(ad?);
+    function nextPoint(λ, φ) {
+      λ *= d3_radians;
+      φ = φ * d3_radians / 2 + π / 4;
+      var dλ = λ - λ0, sdλ = dλ >= 0 ? 1 : -1, adλ = sdλ * dλ, cosφ = Math.cos(φ), sinφ = Math.sin(φ), k = sinφ0 * sinφ, u = cosφ0 * cosφ + k * Math.cos(adλ), v = k * sdλ * Math.sin(adλ);
       d3_geo_areaRingSum.add(Math.atan2(v, u));
-      ?0 = ?, cos?0 = cos?, sin?0 = sin?;
+      λ0 = λ, cosφ0 = cosφ, sinφ0 = sinφ;
     }
     d3_geo_area.lineEnd = function() {
-      nextPoint(?00, ?00);
+      nextPoint(λ00, φ00);
     };
   }
   function d3_geo_cartesian(spherical) {
-    var ? = spherical[0], ? = spherical[1], cos? = Math.cos(?);
-    return [ cos? * Math.cos(?), cos? * Math.sin(?), Math.sin(?) ];
+    var λ = spherical[0], φ = spherical[1], cosφ = Math.cos(φ);
+    return [ cosφ * Math.cos(λ), cosφ * Math.sin(λ), Math.sin(φ) ];
   }
   function d3_geo_cartesianDot(a, b) {
     return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
@@ -3002,10 +3002,10 @@
     return [ Math.atan2(cartesian[1], cartesian[0]), d3_asin(cartesian[2]) ];
   }
   function d3_geo_sphericalEqual(a, b) {
-    return abs(a[0] - b[0]) < ? && abs(a[1] - b[1]) < ?;
+    return abs(a[0] - b[0]) < ε && abs(a[1] - b[1]) < ε;
   }
   d3.geo.bounds = function() {
-    var ?0, ?0, ?1, ?1, ?_, ?__, ?__, p0, d?Sum, ranges, range;
+    var λ0, φ0, λ1, φ1, λ_, λ__, φ__, p0, dλSum, ranges, range;
     var bound = {
       point: point,
       lineStart: lineStart,
@@ -3014,7 +3014,7 @@
         bound.point = ringPoint;
         bound.lineStart = ringStart;
         bound.lineEnd = ringEnd;
-        d?Sum = 0;
+        dλSum = 0;
         d3_geo_area.polygonStart();
       },
       polygonEnd: function() {
@@ -3022,83 +3022,83 @@
         bound.point = point;
         bound.lineStart = lineStart;
         bound.lineEnd = lineEnd;
-        if (d3_geo_areaRingSum < 0) ?0 = -(?1 = 180), ?0 = -(?1 = 90); else if (d?Sum > ?) ?1 = 90; else if (d?Sum < -?) ?0 = -90;
-        range[0] = ?0, range[1] = ?1;
+        if (d3_geo_areaRingSum < 0) λ0 = -(λ1 = 180), φ0 = -(φ1 = 90); else if (dλSum > ε) φ1 = 90; else if (dλSum < -ε) φ0 = -90;
+        range[0] = λ0, range[1] = λ1;
       }
     };
-    function point(?, ?) {
-      ranges.push(range = [ ?0 = ?, ?1 = ? ]);
-      if (? < ?0) ?0 = ?;
-      if (? > ?1) ?1 = ?;
+    function point(λ, φ) {
+      ranges.push(range = [ λ0 = λ, λ1 = λ ]);
+      if (φ < φ0) φ0 = φ;
+      if (φ > φ1) φ1 = φ;
     }
-    function linePoint(?, ?) {
-      var p = d3_geo_cartesian([ ? * d3_radians, ? * d3_radians ]);
+    function linePoint(λ, φ) {
+      var p = d3_geo_cartesian([ λ * d3_radians, φ * d3_radians ]);
       if (p0) {
         var normal = d3_geo_cartesianCross(p0, p), equatorial = [ normal[1], -normal[0], 0 ], inflection = d3_geo_cartesianCross(equatorial, normal);
         d3_geo_cartesianNormalize(inflection);
         inflection = d3_geo_spherical(inflection);
-        var d? = ? - ?_, s = d? > 0 ? 1 : -1, ?i = inflection[0] * d3_degrees * s, antimeridian = abs(d?) > 180;
-        if (antimeridian ^ (s * ?_ < ?i && ?i < s * ?)) {
-          var ?i = inflection[1] * d3_degrees;
-          if (?i > ?1) ?1 = ?i;
-        } else if (?i = (?i + 360) % 360 - 180, antimeridian ^ (s * ?_ < ?i && ?i < s * ?)) {
-          var ?i = -inflection[1] * d3_degrees;
-          if (?i < ?0) ?0 = ?i;
+        var dλ = λ - λ_, s = dλ > 0 ? 1 : -1, λi = inflection[0] * d3_degrees * s, antimeridian = abs(dλ) > 180;
+        if (antimeridian ^ (s * λ_ < λi && λi < s * λ)) {
+          var φi = inflection[1] * d3_degrees;
+          if (φi > φ1) φ1 = φi;
+        } else if (λi = (λi + 360) % 360 - 180, antimeridian ^ (s * λ_ < λi && λi < s * λ)) {
+          var φi = -inflection[1] * d3_degrees;
+          if (φi < φ0) φ0 = φi;
         } else {
-          if (? < ?0) ?0 = ?;
-          if (? > ?1) ?1 = ?;
+          if (φ < φ0) φ0 = φ;
+          if (φ > φ1) φ1 = φ;
         }
         if (antimeridian) {
-          if (? < ?_) {
-            if (angle(?0, ?) > angle(?0, ?1)) ?1 = ?;
+          if (λ < λ_) {
+            if (angle(λ0, λ) > angle(λ0, λ1)) λ1 = λ;
           } else {
-            if (angle(?, ?1) > angle(?0, ?1)) ?0 = ?;
+            if (angle(λ, λ1) > angle(λ0, λ1)) λ0 = λ;
           }
         } else {
-          if (?1 >= ?0) {
-            if (? < ?0) ?0 = ?;
-            if (? > ?1) ?1 = ?;
+          if (λ1 >= λ0) {
+            if (λ < λ0) λ0 = λ;
+            if (λ > λ1) λ1 = λ;
           } else {
-            if (? > ?_) {
-              if (angle(?0, ?) > angle(?0, ?1)) ?1 = ?;
+            if (λ > λ_) {
+              if (angle(λ0, λ) > angle(λ0, λ1)) λ1 = λ;
             } else {
-              if (angle(?, ?1) > angle(?0, ?1)) ?0 = ?;
+              if (angle(λ, λ1) > angle(λ0, λ1)) λ0 = λ;
             }
           }
         }
       } else {
-        point(?, ?);
+        point(λ, φ);
       }
-      p0 = p, ?_ = ?;
+      p0 = p, λ_ = λ;
     }
     function lineStart() {
       bound.point = linePoint;
     }
     function lineEnd() {
-      range[0] = ?0, range[1] = ?1;
+      range[0] = λ0, range[1] = λ1;
       bound.point = point;
       p0 = null;
     }
-    function ringPoint(?, ?) {
+    function ringPoint(λ, φ) {
       if (p0) {
-        var d? = ? - ?_;
-        d?Sum += abs(d?) > 180 ? d? + (d? > 0 ? 360 : -360) : d?;
-      } else ?__ = ?, ?__ = ?;
-      d3_geo_area.point(?, ?);
-      linePoint(?, ?);
+        var dλ = λ - λ_;
+        dλSum += abs(dλ) > 180 ? dλ + (dλ > 0 ? 360 : -360) : dλ;
+      } else λ__ = λ, φ__ = φ;
+      d3_geo_area.point(λ, φ);
+      linePoint(λ, φ);
     }
     function ringStart() {
       d3_geo_area.lineStart();
     }
     function ringEnd() {
-      ringPoint(?__, ?__);
+      ringPoint(λ__, φ__);
       d3_geo_area.lineEnd();
-      if (abs(d?Sum) > ?) ?0 = -(?1 = 180);
-      range[0] = ?0, range[1] = ?1;
+      if (abs(dλSum) > ε) λ0 = -(λ1 = 180);
+      range[0] = λ0, range[1] = λ1;
       p0 = null;
     }
-    function angle(?0, ?1) {
-      return (?1 -= ?0) < 0 ? ?1 + 360 : ?1;
+    function angle(λ0, λ1) {
+      return (λ1 -= λ0) < 0 ? λ1 + 360 : λ1;
     }
     function compareRanges(a, b) {
       return a[0] - b[0];
@@ -3107,7 +3107,7 @@
       return range[0] <= range[1] ? range[0] <= x && x <= range[1] : x < range[0] || range[1] < x;
     }
     return function(feature) {
-      ?1 = ?1 = -(?0 = ?0 = Infinity);
+      φ1 = λ1 = -(λ0 = φ0 = Infinity);
       ranges = [];
       d3.geo.stream(feature, bound);
       var n = ranges.length;
@@ -3122,25 +3122,25 @@
             merged.push(a = b);
           }
         }
-        var best = -Infinity, d?;
+        var best = -Infinity, dλ;
         for (var n = merged.length - 1, i = 0, a = merged[n], b; i <= n; a = b, ++i) {
           b = merged[i];
-          if ((d? = angle(a[1], b[0])) > best) best = d?, ?0 = b[0], ?1 = a[1];
+          if ((dλ = angle(a[1], b[0])) > best) best = dλ, λ0 = b[0], λ1 = a[1];
         }
       }
       ranges = range = null;
-      return ?0 === Infinity || ?0 === Infinity ? [ [ NaN, NaN ], [ NaN, NaN ] ] : [ [ ?0, ?0 ], [ ?1, ?1 ] ];
+      return λ0 === Infinity || φ0 === Infinity ? [ [ NaN, NaN ], [ NaN, NaN ] ] : [ [ λ0, φ0 ], [ λ1, φ1 ] ];
     };
   }();
   d3.geo.centroid = function(object) {
     d3_geo_centroidW0 = d3_geo_centroidW1 = d3_geo_centroidX0 = d3_geo_centroidY0 = d3_geo_centroidZ0 = d3_geo_centroidX1 = d3_geo_centroidY1 = d3_geo_centroidZ1 = d3_geo_centroidX2 = d3_geo_centroidY2 = d3_geo_centroidZ2 = 0;
     d3.geo.stream(object, d3_geo_centroid);
     var x = d3_geo_centroidX2, y = d3_geo_centroidY2, z = d3_geo_centroidZ2, m = x * x + y * y + z * z;
-    if (m < ?2) {
+    if (m < ε2) {
       x = d3_geo_centroidX1, y = d3_geo_centroidY1, z = d3_geo_centroidZ1;
-      if (d3_geo_centroidW1 < ?) x = d3_geo_centroidX0, y = d3_geo_centroidY0, z = d3_geo_centroidZ0;
+      if (d3_geo_centroidW1 < ε) x = d3_geo_centroidX0, y = d3_geo_centroidY0, z = d3_geo_centroidZ0;
       m = x * x + y * y + z * z;
-      if (m < ?2) return [ NaN, NaN ];
+      if (m < ε2) return [ NaN, NaN ];
     }
     return [ Math.atan2(y, x) * d3_degrees, d3_asin(z / Math.sqrt(m)) * d3_degrees ];
   };
@@ -3157,10 +3157,10 @@
       d3_geo_centroid.lineStart = d3_geo_centroidLineStart;
     }
   };
-  function d3_geo_centroidPoint(?, ?) {
-    ? *= d3_radians;
-    var cos? = Math.cos(? *= d3_radians);
-    d3_geo_centroidPointXYZ(cos? * Math.cos(?), cos? * Math.sin(?), Math.sin(?));
+  function d3_geo_centroidPoint(λ, φ) {
+    λ *= d3_radians;
+    var cosφ = Math.cos(φ *= d3_radians);
+    d3_geo_centroidPointXYZ(cosφ * Math.cos(λ), cosφ * Math.sin(λ), Math.sin(φ));
   }
   function d3_geo_centroidPointXYZ(x, y, z) {
     ++d3_geo_centroidW0;
@@ -3170,18 +3170,18 @@
   }
   function d3_geo_centroidLineStart() {
     var x0, y0, z0;
-    d3_geo_centroid.point = function(?, ?) {
-      ? *= d3_radians;
-      var cos? = Math.cos(? *= d3_radians);
-      x0 = cos? * Math.cos(?);
-      y0 = cos? * Math.sin(?);
-      z0 = Math.sin(?);
+    d3_geo_centroid.point = function(λ, φ) {
+      λ *= d3_radians;
+      var cosφ = Math.cos(φ *= d3_radians);
+      x0 = cosφ * Math.cos(λ);
+      y0 = cosφ * Math.sin(λ);
+      z0 = Math.sin(φ);
       d3_geo_centroid.point = nextPoint;
       d3_geo_centroidPointXYZ(x0, y0, z0);
     };
-    function nextPoint(?, ?) {
-      ? *= d3_radians;
-      var cos? = Math.cos(? *= d3_radians), x = cos? * Math.cos(?), y = cos? * Math.sin(?), z = Math.sin(?), w = Math.atan2(Math.sqrt((w = y0 * z - z0 * y) * w + (w = z0 * x - x0 * z) * w + (w = x0 * y - y0 * x) * w), x0 * x + y0 * y + z0 * z);
+    function nextPoint(λ, φ) {
+      λ *= d3_radians;
+      var cosφ = Math.cos(φ *= d3_radians), x = cosφ * Math.cos(λ), y = cosφ * Math.sin(λ), z = Math.sin(φ), w = Math.atan2(Math.sqrt((w = y0 * z - z0 * y) * w + (w = z0 * x - x0 * z) * w + (w = x0 * y - y0 * x) * w), x0 * x + y0 * y + z0 * z);
       d3_geo_centroidW1 += w;
       d3_geo_centroidX1 += w * (x0 + (x0 = x));
       d3_geo_centroidY1 += w * (y0 + (y0 = y));
@@ -3193,25 +3193,25 @@
     d3_geo_centroid.point = d3_geo_centroidPoint;
   }
   function d3_geo_centroidRingStart() {
-    var ?00, ?00, x0, y0, z0;
-    d3_geo_centroid.point = function(?, ?) {
-      ?00 = ?, ?00 = ?;
+    var λ00, φ00, x0, y0, z0;
+    d3_geo_centroid.point = function(λ, φ) {
+      λ00 = λ, φ00 = φ;
       d3_geo_centroid.point = nextPoint;
-      ? *= d3_radians;
-      var cos? = Math.cos(? *= d3_radians);
-      x0 = cos? * Math.cos(?);
-      y0 = cos? * Math.sin(?);
-      z0 = Math.sin(?);
+      λ *= d3_radians;
+      var cosφ = Math.cos(φ *= d3_radians);
+      x0 = cosφ * Math.cos(λ);
+      y0 = cosφ * Math.sin(λ);
+      z0 = Math.sin(φ);
       d3_geo_centroidPointXYZ(x0, y0, z0);
     };
     d3_geo_centroid.lineEnd = function() {
-      nextPoint(?00, ?00);
+      nextPoint(λ00, φ00);
       d3_geo_centroid.lineEnd = d3_geo_centroidLineEnd;
       d3_geo_centroid.point = d3_geo_centroidPoint;
     };
-    function nextPoint(?, ?) {
-      ? *= d3_radians;
-      var cos? = Math.cos(? *= d3_radians), x = cos? * Math.cos(?), y = cos? * Math.sin(?), z = Math.sin(?), cx = y0 * z - z0 * y, cy = z0 * x - x0 * z, cz = x0 * y - y0 * x, m = Math.sqrt(cx * cx + cy * cy + cz * cz), u = x0 * x + y0 * y + z0 * z, v = m && -d3_acos(u) / m, w = Math.atan2(m, u);
+    function nextPoint(λ, φ) {
+      λ *= d3_radians;
+      var cosφ = Math.cos(φ *= d3_radians), x = cosφ * Math.cos(λ), y = cosφ * Math.sin(λ), z = Math.sin(φ), cx = y0 * z - z0 * y, cy = z0 * x - x0 * z, cz = x0 * y - y0 * x, m = Math.sqrt(cx * cx + cy * cy + cz * cz), u = x0 * x + y0 * y + z0 * z, v = m && -d3_acos(u) / m, w = Math.atan2(m, u);
       d3_geo_centroidX2 += v * cx;
       d3_geo_centroidY2 += v * cy;
       d3_geo_centroidZ2 += v * cz;
@@ -3352,12 +3352,12 @@
           listener.polygonEnd();
         }
       };
-      function point(?, ?) {
-        var point = rotate(?, ?);
-        if (pointVisible(? = point[0], ? = point[1])) listener.point(?, ?);
+      function point(λ, φ) {
+        var point = rotate(λ, φ);
+        if (pointVisible(λ = point[0], φ = point[1])) listener.point(λ, φ);
       }
-      function pointLine(?, ?) {
-        var point = rotate(?, ?);
+      function pointLine(λ, φ) {
+        var point = rotate(λ, φ);
         line.point(point[0], point[1]);
       }
       function lineStart() {
@@ -3370,9 +3370,9 @@
       }
       var segments;
       var buffer = d3_geo_clipBufferListener(), ringListener = clipLine(buffer), polygonStarted = false, polygon, ring;
-      function pointRing(?, ?) {
-        ring.push([ ?, ? ]);
-        var point = rotate(?, ?);
+      function pointRing(λ, φ) {
+        ring.push([ λ, φ ]);
+        var point = rotate(λ, φ);
         ringListener.point(point[0], point[1]);
       }
       function ringStart() {
@@ -3413,8 +3413,8 @@
       lineStart: function() {
         lines.push(line = []);
       },
-      point: function(?, ?) {
-        line.push([ ?, ? ]);
+      point: function(λ, φ) {
+        line.push([ λ, φ ]);
       },
       lineEnd: d3_noop,
       buffer: function() {
@@ -3429,71 +3429,71 @@
     };
   }
   function d3_geo_clipSort(a, b) {
-    return ((a = a.x)[0] < 0 ? a[1] - half? - ? : half? - a[1]) - ((b = b.x)[0] < 0 ? b[1] - half? - ? : half? - b[1]);
+    return ((a = a.x)[0] < 0 ? a[1] - halfπ - ε : halfπ - a[1]) - ((b = b.x)[0] < 0 ? b[1] - halfπ - ε : halfπ - b[1]);
   }
-  var d3_geo_clipAntimeridian = d3_geo_clip(d3_true, d3_geo_clipAntimeridianLine, d3_geo_clipAntimeridianInterpolate, [ -?, -? / 2 ]);
+  var d3_geo_clipAntimeridian = d3_geo_clip(d3_true, d3_geo_clipAntimeridianLine, d3_geo_clipAntimeridianInterpolate, [ -π, -π / 2 ]);
   function d3_geo_clipAntimeridianLine(listener) {
-    var ?0 = NaN, ?0 = NaN, s?0 = NaN, clean;
+    var λ0 = NaN, φ0 = NaN, sλ0 = NaN, clean;
     return {
       lineStart: function() {
         listener.lineStart();
         clean = 1;
       },
-      point: function(?1, ?1) {
-        var s?1 = ?1 > 0 ? ? : -?, d? = abs(?1 - ?0);
-        if (abs(d? - ?) < ?) {
-          listener.point(?0, ?0 = (?0 + ?1) / 2 > 0 ? half? : -half?);
-          listener.point(s?0, ?0);
+      point: function(λ1, φ1) {
+        var sλ1 = λ1 > 0 ? π : -π, dλ = abs(λ1 - λ0);
+        if (abs(dλ - π) < ε) {
+          listener.point(λ0, φ0 = (φ0 + φ1) / 2 > 0 ? halfπ : -halfπ);
+          listener.point(sλ0, φ0);
           listener.lineEnd();
           listener.lineStart();
-          listener.point(s?1, ?0);
-          listener.point(?1, ?0);
+          listener.point(sλ1, φ0);
+          listener.point(λ1, φ0);
           clean = 0;
-        } else if (s?0 !== s?1 && d? >= ?) {
-          if (abs(?0 - s?0) < ?) ?0 -= s?0 * ?;
-          if (abs(?1 - s?1) < ?) ?1 -= s?1 * ?;
-          ?0 = d3_geo_clipAntimeridianIntersect(?0, ?0, ?1, ?1);
-          listener.point(s?0, ?0);
+        } else if (sλ0 !== sλ1 && dλ >= π) {
+          if (abs(λ0 - sλ0) < ε) λ0 -= sλ0 * ε;
+          if (abs(λ1 - sλ1) < ε) λ1 -= sλ1 * ε;
+          φ0 = d3_geo_clipAntimeridianIntersect(λ0, φ0, λ1, φ1);
+          listener.point(sλ0, φ0);
           listener.lineEnd();
           listener.lineStart();
-          listener.point(s?1, ?0);
+          listener.point(sλ1, φ0);
           clean = 0;
         }
-        listener.point(?0 = ?1, ?0 = ?1);
-        s?0 = s?1;
+        listener.point(λ0 = λ1, φ0 = φ1);
+        sλ0 = sλ1;
       },
       lineEnd: function() {
         listener.lineEnd();
-        ?0 = ?0 = NaN;
+        λ0 = φ0 = NaN;
       },
       clean: function() {
         return 2 - clean;
       }
     };
   }
-  function d3_geo_clipAntimeridianIntersect(?0, ?0, ?1, ?1) {
-    var cos?0, cos?1, sin?0_?1 = Math.sin(?0 - ?1);
-    return abs(sin?0_?1) > ? ? Math.atan((Math.sin(?0) * (cos?1 = Math.cos(?1)) * Math.sin(?1) - Math.sin(?1) * (cos?0 = Math.cos(?0)) * Math.sin(?0)) / (cos?0 * cos?1 * sin?0_?1)) : (?0 + ?1) / 2;
+  function d3_geo_clipAntimeridianIntersect(λ0, φ0, λ1, φ1) {
+    var cosφ0, cosφ1, sinλ0_λ1 = Math.sin(λ0 - λ1);
+    return abs(sinλ0_λ1) > ε ? Math.atan((Math.sin(φ0) * (cosφ1 = Math.cos(φ1)) * Math.sin(λ1) - Math.sin(φ1) * (cosφ0 = Math.cos(φ0)) * Math.sin(λ0)) / (cosφ0 * cosφ1 * sinλ0_λ1)) : (φ0 + φ1) / 2;
   }
   function d3_geo_clipAntimeridianInterpolate(from, to, direction, listener) {
-    var ?;
+    var φ;
     if (from == null) {
-      ? = direction * half?;
-      listener.point(-?, ?);
-      listener.point(0, ?);
-      listener.point(?, ?);
-      listener.point(?, 0);
-      listener.point(?, -?);
-      listener.point(0, -?);
-      listener.point(-?, -?);
-      listener.point(-?, 0);
-      listener.point(-?, ?);
-    } else if (abs(from[0] - to[0]) > ?) {
-      var s = from[0] < to[0] ? ? : -?;
-      ? = direction * s / 2;
-      listener.point(-s, ?);
-      listener.point(0, ?);
-      listener.point(s, ?);
+      φ = direction * halfπ;
+      listener.point(-π, φ);
+      listener.point(0, φ);
+      listener.point(π, φ);
+      listener.point(π, 0);
+      listener.point(π, -φ);
+      listener.point(0, -φ);
+      listener.point(-π, -φ);
+      listener.point(-π, 0);
+      listener.point(-π, φ);
+    } else if (abs(from[0] - to[0]) > ε) {
+      var s = from[0] < to[0] ? π : -π;
+      φ = direction * s / 2;
+      listener.point(-s, φ);
+      listener.point(0, φ);
+      listener.point(s, φ);
     } else {
       listener.point(to[0], to[1]);
     }
@@ -3504,34 +3504,34 @@
     for (var i = 0, n = polygon.length; i < n; ++i) {
       var ring = polygon[i], m = ring.length;
       if (!m) continue;
-      var point0 = ring[0], ?0 = point0[0], ?0 = point0[1] / 2 + ? / 4, sin?0 = Math.sin(?0), cos?0 = Math.cos(?0), j = 1;
+      var point0 = ring[0], λ0 = point0[0], φ0 = point0[1] / 2 + π / 4, sinφ0 = Math.sin(φ0), cosφ0 = Math.cos(φ0), j = 1;
       while (true) {
         if (j === m) j = 0;
         point = ring[j];
-        var ? = point[0], ? = point[1] / 2 + ? / 4, sin? = Math.sin(?), cos? = Math.cos(?), d? = ? - ?0, sd? = d? >= 0 ? 1 : -1, ad? = sd? * d?, antimeridian = ad? > ?, k = sin?0 * sin?;
-        d3_geo_areaRingSum.add(Math.atan2(k * sd? * Math.sin(ad?), cos?0 * cos? + k * Math.cos(ad?)));
-        polarAngle += antimeridian ? d? + sd? * ? : d?;
-        if (antimeridian ^ ?0 >= meridian ^ ? >= meridian) {
+        var λ = point[0], φ = point[1] / 2 + π / 4, sinφ = Math.sin(φ), cosφ = Math.cos(φ), dλ = λ - λ0, sdλ = dλ >= 0 ? 1 : -1, adλ = sdλ * dλ, antimeridian = adλ > π, k = sinφ0 * sinφ;
+        d3_geo_areaRingSum.add(Math.atan2(k * sdλ * Math.sin(adλ), cosφ0 * cosφ + k * Math.cos(adλ)));
+        polarAngle += antimeridian ? dλ + sdλ * τ : dλ;
+        if (antimeridian ^ λ0 >= meridian ^ λ >= meridian) {
           var arc = d3_geo_cartesianCross(d3_geo_cartesian(point0), d3_geo_cartesian(point));
           d3_geo_cartesianNormalize(arc);
           var intersection = d3_geo_cartesianCross(meridianNormal, arc);
           d3_geo_cartesianNormalize(intersection);
-          var ?arc = (antimeridian ^ d? >= 0 ? -1 : 1) * d3_asin(intersection[2]);
-          if (parallel > ?arc || parallel === ?arc && (arc[0] || arc[1])) {
-            winding += antimeridian ^ d? >= 0 ? 1 : -1;
+          var φarc = (antimeridian ^ dλ >= 0 ? -1 : 1) * d3_asin(intersection[2]);
+          if (parallel > φarc || parallel === φarc && (arc[0] || arc[1])) {
+            winding += antimeridian ^ dλ >= 0 ? 1 : -1;
           }
         }
         if (!j++) break;
-        ?0 = ?, sin?0 = sin?, cos?0 = cos?, point0 = point;
+        λ0 = λ, sinφ0 = sinφ, cosφ0 = cosφ, point0 = point;
       }
     }
-    return (polarAngle < -? || polarAngle < ? && d3_geo_areaRingSum < -?) ^ winding & 1;
+    return (polarAngle < -ε || polarAngle < ε && d3_geo_areaRingSum < -ε) ^ winding & 1;
   }
   function d3_geo_clipCircle(radius) {
-    var cr = Math.cos(radius), smallRadius = cr > 0, notHemisphere = abs(cr) > ?, interpolate = d3_geo_circleInterpolate(radius, 6 * d3_radians);
-    return d3_geo_clip(visible, clipLine, interpolate, smallRadius ? [ 0, -radius ] : [ -?, radius - ? ]);
-    function visible(?, ?) {
-      return Math.cos(?) * Math.cos(?) > cr;
+    var cr = Math.cos(radius), smallRadius = cr > 0, notHemisphere = abs(cr) > ε, interpolate = d3_geo_circleInterpolate(radius, 6 * d3_radians);
+    return d3_geo_clip(visible, clipLine, interpolate, smallRadius ? [ 0, -radius ] : [ -π, radius - π ]);
+    function visible(λ, φ) {
+      return Math.cos(λ) * Math.cos(φ) > cr;
     }
     function clipLine(listener) {
       var point0, c0, v0, v00, clean;
@@ -3540,14 +3540,14 @@
           v00 = v0 = false;
           clean = 1;
         },
-        point: function(?, ?) {
-          var point1 = [ ?, ? ], point2, v = visible(?, ?), c = smallRadius ? v ? 0 : code(?, ?) : v ? code(? + (? < 0 ? ? : -?), ?) : 0;
+        point: function(λ, φ) {
+          var point1 = [ λ, φ ], point2, v = visible(λ, φ), c = smallRadius ? v ? 0 : code(λ, φ) : v ? code(λ + (λ < 0 ? π : -π), φ) : 0;
           if (!point0 && (v00 = v0 = v)) listener.lineStart();
           if (v !== v0) {
             point2 = intersect(point0, point1);
             if (d3_geo_sphericalEqual(point0, point2) || d3_geo_sphericalEqual(point1, point2)) {
-              point1[0] += ?;
-              point1[1] += ?;
+              point1[0] += ε;
+              point1[1] += ε;
               v = visible(point1[0], point1[1]);
             }
           }
@@ -3606,20 +3606,20 @@
       d3_geo_cartesianAdd(q, A);
       q = d3_geo_spherical(q);
       if (!two) return q;
-      var ?0 = a[0], ?1 = b[0], ?0 = a[1], ?1 = b[1], z;
-      if (?1 < ?0) z = ?0, ?0 = ?1, ?1 = z;
-      var ?? = ?1 - ?0, polar = abs(?? - ?) < ?, meridian = polar || ?? < ?;
-      if (!polar && ?1 < ?0) z = ?0, ?0 = ?1, ?1 = z;
-      if (meridian ? polar ? ?0 + ?1 > 0 ^ q[1] < (abs(q[0] - ?0) < ? ? ?0 : ?1) : ?0 <= q[1] && q[1] <= ?1 : ?? > ? ^ (?0 <= q[0] && q[0] <= ?1)) {
+      var λ0 = a[0], λ1 = b[0], φ0 = a[1], φ1 = b[1], z;
+      if (λ1 < λ0) z = λ0, λ0 = λ1, λ1 = z;
+      var δλ = λ1 - λ0, polar = abs(δλ - π) < ε, meridian = polar || δλ < ε;
+      if (!polar && φ1 < φ0) z = φ0, φ0 = φ1, φ1 = z;
+      if (meridian ? polar ? φ0 + φ1 > 0 ^ q[1] < (abs(q[0] - λ0) < ε ? φ0 : φ1) : φ0 <= q[1] && q[1] <= φ1 : δλ > π ^ (λ0 <= q[0] && q[0] <= λ1)) {
         var q1 = d3_geo_cartesianScale(u, (-w + t) / uu);
         d3_geo_cartesianAdd(q1, A);
         return [ q, d3_geo_spherical(q1) ];
       }
     }
-    function code(?, ?) {
-      var r = smallRadius ? radius : ? - radius, code = 0;
-      if (? < -r) code |= 1; else if (? > r) code |= 2;
-      if (? < -r) code |= 4; else if (? > r) code |= 8;
+    function code(λ, φ) {
+      var r = smallRadius ? radius : π - radius, code = 0;
+      if (λ < -r) code |= 1; else if (λ > r) code |= 2;
+      if (φ < -r) code |= 4; else if (φ > r) code |= 8;
       return code;
     }
   }
@@ -3819,7 +3819,7 @@
       return clip;
     };
     function corner(p, direction) {
-      return abs(p[0] - x0) < ? ? direction > 0 ? 0 : 3 : abs(p[0] - x1) < ? ? direction > 0 ? 2 : 1 : abs(p[1] - y0) < ? ? direction > 0 ? 1 : 0 : direction > 0 ? 3 : 2;
+      return abs(p[0] - x0) < ε ? direction > 0 ? 0 : 3 : abs(p[0] - x1) < ε ? direction > 0 ? 2 : 1 : abs(p[1] - y0) < ε ? direction > 0 ? 1 : 0 : direction > 0 ? 3 : 2;
     }
     function compare(a, b) {
       return comparePoints(a.x, b.x);
@@ -3830,22 +3830,22 @@
     }
   }
   function d3_geo_conic(projectAt) {
-    var ?0 = 0, ?1 = ? / 3, m = d3_geo_projectionMutator(projectAt), p = m(?0, ?1);
+    var φ0 = 0, φ1 = π / 3, m = d3_geo_projectionMutator(projectAt), p = m(φ0, φ1);
     p.parallels = function(_) {
-      if (!arguments.length) return [ ?0 / ? * 180, ?1 / ? * 180 ];
-      return m(?0 = _[0] * ? / 180, ?1 = _[1] * ? / 180);
+      if (!arguments.length) return [ φ0 / π * 180, φ1 / π * 180 ];
+      return m(φ0 = _[0] * π / 180, φ1 = _[1] * π / 180);
     };
     return p;
   }
-  function d3_geo_conicEqualArea(?0, ?1) {
-    var sin?0 = Math.sin(?0), n = (sin?0 + Math.sin(?1)) / 2, C = 1 + sin?0 * (2 * n - sin?0), ?0 = Math.sqrt(C) / n;
-    function forward(?, ?) {
-      var ? = Math.sqrt(C - 2 * n * Math.sin(?)) / n;
-      return [ ? * Math.sin(? *= n), ?0 - ? * Math.cos(?) ];
+  function d3_geo_conicEqualArea(φ0, φ1) {
+    var sinφ0 = Math.sin(φ0), n = (sinφ0 + Math.sin(φ1)) / 2, C = 1 + sinφ0 * (2 * n - sinφ0), ρ0 = Math.sqrt(C) / n;
+    function forward(λ, φ) {
+      var ρ = Math.sqrt(C - 2 * n * Math.sin(φ)) / n;
+      return [ ρ * Math.sin(λ *= n), ρ0 - ρ * Math.cos(λ) ];
     }
     forward.invert = function(x, y) {
-      var ?0_y = ?0 - y;
-      return [ Math.atan2(x, ?0_y) / n, d3_asin((C - (x * x + ?0_y * ?0_y) * n * n) / (2 * n)) ];
+      var ρ0_y = ρ0 - y;
+      return [ Math.atan2(x, ρ0_y) / n, d3_asin((C - (x * x + ρ0_y * ρ0_y) * n * n) / (2 * n)) ];
     };
     return forward;
   }
@@ -3927,8 +3927,8 @@
       if (!arguments.length) return lower48.translate();
       var k = lower48.scale(), x = +_[0], y = +_[1];
       lower48Point = lower48.translate(_).clipExtent([ [ x - .455 * k, y - .238 * k ], [ x + .455 * k, y + .238 * k ] ]).stream(pointStream).point;
-      alaskaPoint = alaska.translate([ x - .307 * k, y + .201 * k ]).clipExtent([ [ x - .425 * k + ?, y + .12 * k + ? ], [ x - .214 * k - ?, y + .234 * k - ? ] ]).stream(pointStream).point;
-      hawaiiPoint = hawaii.translate([ x - .205 * k, y + .212 * k ]).clipExtent([ [ x - .214 * k + ?, y + .166 * k + ? ], [ x - .115 * k - ?, y + .234 * k - ? ] ]).stream(pointStream).point;
+      alaskaPoint = alaska.translate([ x - .307 * k, y + .201 * k ]).clipExtent([ [ x - .425 * k + ε, y + .12 * k + ε ], [ x - .214 * k - ε, y + .234 * k - ε ] ]).stream(pointStream).point;
+      hawaiiPoint = hawaii.translate([ x - .205 * k, y + .212 * k ]).clipExtent([ [ x - .214 * k + ε, y + .166 * k + ε ], [ x - .115 * k - ε, y + .234 * k - ε ] ]).stream(pointStream).point;
       return albersUsa;
     };
     return albersUsa.scale(1070);
@@ -4101,7 +4101,7 @@
     };
     function point(x, y) {
       context.moveTo(x + pointRadius, y);
-      context.arc(x, y, pointRadius, 0, ?);
+      context.arc(x, y, pointRadius, 0, τ);
     }
     function pointLineStart(x, y) {
       context.moveTo(x, y);
@@ -4119,7 +4119,7 @@
     return stream;
   }
   function d3_geo_resample(project) {
-    var ?2 = .5, cosMinDistance = Math.cos(30 * d3_radians), maxDepth = 16;
+    var δ2 = .5, cosMinDistance = Math.cos(30 * d3_radians), maxDepth = 16;
     function resample(stream) {
       return (maxDepth ? resampleRecursive : resampleNone)(stream);
     }
@@ -4130,7 +4130,7 @@
       });
     }
     function resampleRecursive(stream) {
-      var ?00, ?00, x00, y00, a00, b00, c00, ?0, x0, y0, a0, b0, c0;
+      var λ00, φ00, x00, y00, a00, b00, c00, λ0, x0, y0, a0, b0, c0;
       var resample = {
         point: point,
         lineStart: lineStart,
@@ -4153,9 +4153,9 @@
         resample.point = linePoint;
         stream.lineStart();
       }
-      function linePoint(?, ?) {
-        var c = d3_geo_cartesian([ ?, ? ]), p = project(?, ?);
-        resampleLineTo(x0, y0, ?0, a0, b0, c0, x0 = p[0], y0 = p[1], ?0 = ?, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
+      function linePoint(λ, φ) {
+        var c = d3_geo_cartesian([ λ, φ ]), p = project(λ, φ);
+        resampleLineTo(x0, y0, λ0, a0, b0, c0, x0 = p[0], y0 = p[1], λ0 = λ, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
         stream.point(x0, y0);
       }
       function lineEnd() {
@@ -4167,31 +4167,31 @@
         resample.point = ringPoint;
         resample.lineEnd = ringEnd;
       }
-      function ringPoint(?, ?) {
-        linePoint(?00 = ?, ?00 = ?), x00 = x0, y00 = y0, a00 = a0, b00 = b0, c00 = c0;
+      function ringPoint(λ, φ) {
+        linePoint(λ00 = λ, φ00 = φ), x00 = x0, y00 = y0, a00 = a0, b00 = b0, c00 = c0;
         resample.point = linePoint;
       }
       function ringEnd() {
-        resampleLineTo(x0, y0, ?0, a0, b0, c0, x00, y00, ?00, a00, b00, c00, maxDepth, stream);
+        resampleLineTo(x0, y0, λ0, a0, b0, c0, x00, y00, λ00, a00, b00, c00, maxDepth, stream);
         resample.lineEnd = lineEnd;
         lineEnd();
       }
       return resample;
     }
-    function resampleLineTo(x0, y0, ?0, a0, b0, c0, x1, y1, ?1, a1, b1, c1, depth, stream) {
+    function resampleLineTo(x0, y0, λ0, a0, b0, c0, x1, y1, λ1, a1, b1, c1, depth, stream) {
       var dx = x1 - x0, dy = y1 - y0, d2 = dx * dx + dy * dy;
-      if (d2 > 4 * ?2 && depth--) {
-        var a = a0 + a1, b = b0 + b1, c = c0 + c1, m = Math.sqrt(a * a + b * b + c * c), ?2 = Math.asin(c /= m), ?2 = abs(abs(c) - 1) < ? || abs(?0 - ?1) < ? ? (?0 + ?1) / 2 : Math.atan2(b, a), p = project(?2, ?2), x2 = p[0], y2 = p[1], dx2 = x2 - x0, dy2 = y2 - y0, dz = dy * dx2 - dx * dy2;
-        if (dz * dz / d2 > ?2 || abs((dx * dx2 + dy * dy2) / d2 - .5) > .3 || a0 * a1 + b0 * b1 + c0 * c1 < cosMinDistance) {
-          resampleLineTo(x0, y0, ?0, a0, b0, c0, x2, y2, ?2, a /= m, b /= m, c, depth, stream);
+      if (d2 > 4 * δ2 && depth--) {
+        var a = a0 + a1, b = b0 + b1, c = c0 + c1, m = Math.sqrt(a * a + b * b + c * c), φ2 = Math.asin(c /= m), λ2 = abs(abs(c) - 1) < ε || abs(λ0 - λ1) < ε ? (λ0 + λ1) / 2 : Math.atan2(b, a), p = project(λ2, φ2), x2 = p[0], y2 = p[1], dx2 = x2 - x0, dy2 = y2 - y0, dz = dy * dx2 - dx * dy2;
+        if (dz * dz / d2 > δ2 || abs((dx * dx2 + dy * dy2) / d2 - .5) > .3 || a0 * a1 + b0 * b1 + c0 * c1 < cosMinDistance) {
+          resampleLineTo(x0, y0, λ0, a0, b0, c0, x2, y2, λ2, a /= m, b /= m, c, depth, stream);
           stream.point(x2, y2);
-          resampleLineTo(x2, y2, ?2, a, b, c, x1, y1, ?1, a1, b1, c1, depth, stream);
+          resampleLineTo(x2, y2, λ2, a, b, c, x1, y1, λ1, a1, b1, c1, depth, stream);
         }
       }
     }
     resample.precision = function(_) {
-      if (!arguments.length) return Math.sqrt(?2);
-      maxDepth = (?2 = _ * _) > 0 && 16;
+      if (!arguments.length) return Math.sqrt(δ2);
+      maxDepth = (δ2 = _ * _) > 0 && 16;
       return resample;
     };
     return resample;
@@ -4313,14 +4313,14 @@
   function d3_geo_projectionMutator(projectAt) {
     var project, rotate, projectRotate, projectResample = d3_geo_resample(function(x, y) {
       x = project(x, y);
-      return [ x[0] * k + ?x, ?y - x[1] * k ];
-    }), k = 150, x = 480, y = 250, ? = 0, ? = 0, ?? = 0, ?? = 0, ?? = 0, ?x, ?y, preclip = d3_geo_clipAntimeridian, postclip = d3_identity, clipAngle = null, clipExtent = null, stream;
+      return [ x[0] * k + δx, δy - x[1] * k ];
+    }), k = 150, x = 480, y = 250, λ = 0, φ = 0, δλ = 0, δφ = 0, δγ = 0, δx, δy, preclip = d3_geo_clipAntimeridian, postclip = d3_identity, clipAngle = null, clipExtent = null, stream;
     function projection(point) {
       point = projectRotate(point[0] * d3_radians, point[1] * d3_radians);
-      return [ point[0] * k + ?x, ?y - point[1] * k ];
+      return [ point[0] * k + δx, δy - point[1] * k ];
     }
     function invert(point) {
-      point = projectRotate.invert((point[0] - ?x) / k, (?y - point[1]) / k);
+      point = projectRotate.invert((point[0] - δx) / k, (δy - point[1]) / k);
       return point && [ point[0] * d3_degrees, point[1] * d3_degrees ];
     }
     projection.stream = function(output) {
@@ -4352,24 +4352,24 @@
       return reset();
     };
     projection.center = function(_) {
-      if (!arguments.length) return [ ? * d3_degrees, ? * d3_degrees ];
-      ? = _[0] % 360 * d3_radians;
-      ? = _[1] % 360 * d3_radians;
+      if (!arguments.length) return [ λ * d3_degrees, φ * d3_degrees ];
+      λ = _[0] % 360 * d3_radians;
+      φ = _[1] % 360 * d3_radians;
       return reset();
     };
     projection.rotate = function(_) {
-      if (!arguments.length) return [ ?? * d3_degrees, ?? * d3_degrees, ?? * d3_degrees ];
-      ?? = _[0] % 360 * d3_radians;
-      ?? = _[1] % 360 * d3_radians;
-      ?? = _.length > 2 ? _[2] % 360 * d3_radians : 0;
+      if (!arguments.length) return [ δλ * d3_degrees, δφ * d3_degrees, δγ * d3_degrees ];
+      δλ = _[0] % 360 * d3_radians;
+      δφ = _[1] % 360 * d3_radians;
+      δγ = _.length > 2 ? _[2] % 360 * d3_radians : 0;
       return reset();
     };
     d3.rebind(projection, projectResample, "precision");
     function reset() {
-      projectRotate = d3_geo_compose(rotate = d3_geo_rotation(??, ??, ??), project);
-      var center = project(?, ?);
-      ?x = x - center[0] * k;
-      ?y = y + center[1] * k;
+      projectRotate = d3_geo_compose(rotate = d3_geo_rotation(δλ, δφ, δγ), project);
+      var center = project(λ, φ);
+      δx = x - center[0] * k;
+      δy = y + center[1] * k;
       return invalidate();
     }
     function invalidate() {
@@ -4387,8 +4387,8 @@
       stream.point(x * d3_radians, y * d3_radians);
     });
   }
-  function d3_geo_equirectangular(?, ?) {
-    return [ ?, ? ];
+  function d3_geo_equirectangular(λ, φ) {
+    return [ λ, φ ];
   }
   (d3.geo.equirectangular = function() {
     return d3_geo_projection(d3_geo_equirectangular);
@@ -4405,32 +4405,32 @@
     };
     return forward;
   };
-  function d3_geo_identityRotation(?, ?) {
-    return [ ? > ? ? ? - ? : ? < -? ? ? + ? : ?, ? ];
+  function d3_geo_identityRotation(λ, φ) {
+    return [ λ > π ? λ - τ : λ < -π ? λ + τ : λ, φ ];
   }
   d3_geo_identityRotation.invert = d3_geo_equirectangular;
-  function d3_geo_rotation(??, ??, ??) {
-    return ?? ? ?? || ?? ? d3_geo_compose(d3_geo_rotation?(??), d3_geo_rotation??(??, ??)) : d3_geo_rotation?(??) : ?? || ?? ? d3_geo_rotation??(??, ??) : d3_geo_identityRotation;
+  function d3_geo_rotation(δλ, δφ, δγ) {
+    return δλ ? δφ || δγ ? d3_geo_compose(d3_geo_rotationλ(δλ), d3_geo_rotationφγ(δφ, δγ)) : d3_geo_rotationλ(δλ) : δφ || δγ ? d3_geo_rotationφγ(δφ, δγ) : d3_geo_identityRotation;
   }
-  function d3_geo_forwardRotation?(??) {
-    return function(?, ?) {
-      return ? += ??, [ ? > ? ? ? - ? : ? < -? ? ? + ? : ?, ? ];
+  function d3_geo_forwardRotationλ(δλ) {
+    return function(λ, φ) {
+      return λ += δλ, [ λ > π ? λ - τ : λ < -π ? λ + τ : λ, φ ];
     };
   }
-  function d3_geo_rotation?(??) {
-    var rotation = d3_geo_forwardRotation?(??);
-    rotation.invert = d3_geo_forwardRotation?(-??);
+  function d3_geo_rotationλ(δλ) {
+    var rotation = d3_geo_forwardRotationλ(δλ);
+    rotation.invert = d3_geo_forwardRotationλ(-δλ);
     return rotation;
   }
-  function d3_geo_rotation??(??, ??) {
-    var cos?? = Math.cos(??), sin?? = Math.sin(??), cos?? = Math.cos(??), sin?? = Math.sin(??);
-    function rotation(?, ?) {
-      var cos? = Math.cos(?), x = Math.cos(?) * cos?, y = Math.sin(?) * cos?, z = Math.sin(?), k = z * cos?? + x * sin??;
-      return [ Math.atan2(y * cos?? - k * sin??, x * cos?? - z * sin??), d3_asin(k * cos?? + y * sin??) ];
+  function d3_geo_rotationφγ(δφ, δγ) {
+    var cosδφ = Math.cos(δφ), sinδφ = Math.sin(δφ), cosδγ = Math.cos(δγ), sinδγ = Math.sin(δγ);
+    function rotation(λ, φ) {
+      var cosφ = Math.cos(φ), x = Math.cos(λ) * cosφ, y = Math.sin(λ) * cosφ, z = Math.sin(φ), k = z * cosδφ + x * sinδφ;
+      return [ Math.atan2(y * cosδγ - k * sinδγ, x * cosδφ - z * sinδφ), d3_asin(k * cosδγ + y * sinδγ) ];
     }
-    rotation.invert = function(?, ?) {
-      var cos? = Math.cos(?), x = Math.cos(?) * cos?, y = Math.sin(?) * cos?, z = Math.sin(?), k = z * cos?? - y * sin??;
-      return [ Math.atan2(y * cos?? + z * sin??, x * cos?? + k * sin??), d3_asin(k * cos?? - x * sin??) ];
+    rotation.invert = function(λ, φ) {
+      var cosφ = Math.cos(φ), x = Math.cos(λ) * cosφ, y = Math.sin(λ) * cosφ, z = Math.sin(φ), k = z * cosδγ - y * sinδγ;
+      return [ Math.atan2(y * cosδγ + z * sinδγ, x * cosδφ + k * sinδφ), d3_asin(k * cosδφ - x * sinδφ) ];
     };
     return rotation;
   }
@@ -4473,9 +4473,9 @@
       if (from != null) {
         from = d3_geo_circleAngle(cr, from);
         to = d3_geo_circleAngle(cr, to);
-        if (direction > 0 ? from < to : from > to) from += direction * ?;
+        if (direction > 0 ? from < to : from > to) from += direction * τ;
       } else {
-        from = radius + direction * ?;
+        from = radius + direction * τ;
         to = radius - .5 * step;
       }
       for (var point, t = from; direction > 0 ? t > to : t < to; t -= step) {
@@ -4488,11 +4488,11 @@
     a[0] -= cr;
     d3_geo_cartesianNormalize(a);
     var angle = d3_acos(-a[1]);
-    return ((-a[2] < 0 ? -angle : angle) + 2 * Math.PI - ?) % (2 * Math.PI);
+    return ((-a[2] < 0 ? -angle : angle) + 2 * Math.PI - ε) % (2 * Math.PI);
   }
   d3.geo.distance = function(a, b) {
-    var ?? = (b[0] - a[0]) * d3_radians, ?0 = a[1] * d3_radians, ?1 = b[1] * d3_radians, sin?? = Math.sin(??), cos?? = Math.cos(??), sin?0 = Math.sin(?0), cos?0 = Math.cos(?0), sin?1 = Math.sin(?1), cos?1 = Math.cos(?1), t;
-    return Math.atan2(Math.sqrt((t = cos?1 * sin??) * t + (t = cos?0 * sin?1 - sin?0 * cos?1 * cos??) * t), sin?0 * sin?1 + cos?0 * cos?1 * cos??);
+    var Δλ = (b[0] - a[0]) * d3_radians, φ0 = a[1] * d3_radians, φ1 = b[1] * d3_radians, sinΔλ = Math.sin(Δλ), cosΔλ = Math.cos(Δλ), sinφ0 = Math.sin(φ0), cosφ0 = Math.cos(φ0), sinφ1 = Math.sin(φ1), cosφ1 = Math.cos(φ1), t;
+    return Math.atan2(Math.sqrt((t = cosφ1 * sinΔλ) * t + (t = cosφ0 * sinφ1 - sinφ0 * cosφ1 * cosΔλ) * t), sinφ0 * sinφ1 + cosφ0 * cosφ1 * cosΔλ);
   };
   d3.geo.graticule = function() {
     var x1, x0, X1, X0, y1, y0, Y1, Y0, dx = 10, dy = dx, DX = 90, DY = 360, x, y, X, Y, precision = 2.5;
@@ -4504,9 +4504,9 @@
     }
     function lines() {
       return d3.range(Math.ceil(X0 / DX) * DX, X1, DX).map(X).concat(d3.range(Math.ceil(Y0 / DY) * DY, Y1, DY).map(Y)).concat(d3.range(Math.ceil(x0 / dx) * dx, x1, dx).filter(function(x) {
-        return abs(x % DX) > ?;
+        return abs(x % DX) > ε;
       }).map(x)).concat(d3.range(Math.ceil(y0 / dy) * dy, y1, dy).filter(function(y) {
-        return abs(y % DY) > ?;
+        return abs(y % DY) > ε;
       }).map(y));
     }
     graticule.lines = function() {
@@ -4566,10 +4566,10 @@
       Y = d3_geo_graticuleY(X0, X1, precision);
       return graticule;
     };
-    return graticule.majorExtent([ [ -180, -90 + ? ], [ 180, 90 - ? ] ]).minorExtent([ [ -180, -80 - ? ], [ 180, 80 + ? ] ]);
+    return graticule.majorExtent([ [ -180, -90 + ε ], [ 180, 90 - ε ] ]).minorExtent([ [ -180, -80 - ε ], [ 180, 80 + ε ] ]);
   };
   function d3_geo_graticuleX(y0, y1, dy) {
-    var y = d3.range(y0, y1 - ?, dy).concat(y1);
+    var y = d3.range(y0, y1 - ε, dy).concat(y1);
     return function(x) {
       return y.map(function(y) {
         return [ x, y ];
@@ -4577,7 +4577,7 @@
     };
   }
   function d3_geo_graticuleY(x0, x1, dx) {
-    var x = d3.range(x0, x1 - ?, dx).concat(x1);
+    var x = d3.range(x0, x1 - ε, dx).concat(x1);
     return function(y) {
       return x.map(function(x) {
         return [ x, y ];
@@ -4645,96 +4645,96 @@
     polygonEnd: d3_noop
   };
   function d3_geo_lengthLineStart() {
-    var ?0, sin?0, cos?0;
-    d3_geo_length.point = function(?, ?) {
-      ?0 = ? * d3_radians, sin?0 = Math.sin(? *= d3_radians), cos?0 = Math.cos(?);
+    var λ0, sinφ0, cosφ0;
+    d3_geo_length.point = function(λ, φ) {
+      λ0 = λ * d3_radians, sinφ0 = Math.sin(φ *= d3_radians), cosφ0 = Math.cos(φ);
       d3_geo_length.point = nextPoint;
     };
     d3_geo_length.lineEnd = function() {
       d3_geo_length.point = d3_geo_length.lineEnd = d3_noop;
     };
-    function nextPoint(?, ?) {
-      var sin? = Math.sin(? *= d3_radians), cos? = Math.cos(?), t = abs((? *= d3_radians) - ?0), cos?? = Math.cos(t);
-      d3_geo_lengthSum += Math.atan2(Math.sqrt((t = cos? * Math.sin(t)) * t + (t = cos?0 * sin? - sin?0 * cos? * cos??) * t), sin?0 * sin? + cos?0 * cos? * cos??);
-      ?0 = ?, sin?0 = sin?, cos?0 = cos?;
+    function nextPoint(λ, φ) {
+      var sinφ = Math.sin(φ *= d3_radians), cosφ = Math.cos(φ), t = abs((λ *= d3_radians) - λ0), cosΔλ = Math.cos(t);
+      d3_geo_lengthSum += Math.atan2(Math.sqrt((t = cosφ * Math.sin(t)) * t + (t = cosφ0 * sinφ - sinφ0 * cosφ * cosΔλ) * t), sinφ0 * sinφ + cosφ0 * cosφ * cosΔλ);
+      λ0 = λ, sinφ0 = sinφ, cosφ0 = cosφ;
     }
   }
   function d3_geo_azimuthal(scale, angle) {
-    function azimuthal(?, ?) {
-      var cos? = Math.cos(?), cos? = Math.cos(?), k = scale(cos? * cos?);
-      return [ k * cos? * Math.sin(?), k * Math.sin(?) ];
+    function azimuthal(λ, φ) {
+      var cosλ = Math.cos(λ), cosφ = Math.cos(φ), k = scale(cosλ * cosφ);
+      return [ k * cosφ * Math.sin(λ), k * Math.sin(φ) ];
     }
     azimuthal.invert = function(x, y) {
-      var ? = Math.sqrt(x * x + y * y), c = angle(?), sinc = Math.sin(c), cosc = Math.cos(c);
-      return [ Math.atan2(x * sinc, ? * cosc), Math.asin(? && y * sinc / ?) ];
+      var ρ = Math.sqrt(x * x + y * y), c = angle(ρ), sinc = Math.sin(c), cosc = Math.cos(c);
+      return [ Math.atan2(x * sinc, ρ * cosc), Math.asin(ρ && y * sinc / ρ) ];
     };
     return azimuthal;
   }
-  var d3_geo_azimuthalEqualArea = d3_geo_azimuthal(function(cos?cos?) {
-    return Math.sqrt(2 / (1 + cos?cos?));
-  }, function(?) {
-    return 2 * Math.asin(? / 2);
+  var d3_geo_azimuthalEqualArea = d3_geo_azimuthal(function(cosλcosφ) {
+    return Math.sqrt(2 / (1 + cosλcosφ));
+  }, function(ρ) {
+    return 2 * Math.asin(ρ / 2);
   });
   (d3.geo.azimuthalEqualArea = function() {
     return d3_geo_projection(d3_geo_azimuthalEqualArea);
   }).raw = d3_geo_azimuthalEqualArea;
-  var d3_geo_azimuthalEquidistant = d3_geo_azimuthal(function(cos?cos?) {
-    var c = Math.acos(cos?cos?);
+  var d3_geo_azimuthalEquidistant = d3_geo_azimuthal(function(cosλcosφ) {
+    var c = Math.acos(cosλcosφ);
     return c && c / Math.sin(c);
   }, d3_identity);
   (d3.geo.azimuthalEquidistant = function() {
     return d3_geo_projection(d3_geo_azimuthalEquidistant);
   }).raw = d3_geo_azimuthalEquidistant;
-  function d3_geo_conicConformal(?0, ?1) {
-    var cos?0 = Math.cos(?0), t = function(?) {
-      return Math.tan(? / 4 + ? / 2);
-    }, n = ?0 === ?1 ? Math.sin(?0) : Math.log(cos?0 / Math.cos(?1)) / Math.log(t(?1) / t(?0)), F = cos?0 * Math.pow(t(?0), n) / n;
+  function d3_geo_conicConformal(φ0, φ1) {
+    var cosφ0 = Math.cos(φ0), t = function(φ) {
+      return Math.tan(π / 4 + φ / 2);
+    }, n = φ0 === φ1 ? Math.sin(φ0) : Math.log(cosφ0 / Math.cos(φ1)) / Math.log(t(φ1) / t(φ0)), F = cosφ0 * Math.pow(t(φ0), n) / n;
     if (!n) return d3_geo_mercator;
-    function forward(?, ?) {
+    function forward(λ, φ) {
       if (F > 0) {
-        if (? < -half? + ?) ? = -half? + ?;
+        if (φ < -halfπ + ε) φ = -halfπ + ε;
       } else {
-        if (? > half? - ?) ? = half? - ?;
+        if (φ > halfπ - ε) φ = halfπ - ε;
       }
-      var ? = F / Math.pow(t(?), n);
-      return [ ? * Math.sin(n * ?), F - ? * Math.cos(n * ?) ];
+      var ρ = F / Math.pow(t(φ), n);
+      return [ ρ * Math.sin(n * λ), F - ρ * Math.cos(n * λ) ];
     }
     forward.invert = function(x, y) {
-      var ?0_y = F - y, ? = d3_sgn(n) * Math.sqrt(x * x + ?0_y * ?0_y);
-      return [ Math.atan2(x, ?0_y) / n, 2 * Math.atan(Math.pow(F / ?, 1 / n)) - half? ];
+      var ρ0_y = F - y, ρ = d3_sgn(n) * Math.sqrt(x * x + ρ0_y * ρ0_y);
+      return [ Math.atan2(x, ρ0_y) / n, 2 * Math.atan(Math.pow(F / ρ, 1 / n)) - halfπ ];
     };
     return forward;
   }
   (d3.geo.conicConformal = function() {
     return d3_geo_conic(d3_geo_conicConformal);
   }).raw = d3_geo_conicConformal;
-  function d3_geo_conicEquidistant(?0, ?1) {
-    var cos?0 = Math.cos(?0), n = ?0 === ?1 ? Math.sin(?0) : (cos?0 - Math.cos(?1)) / (?1 - ?0), G = cos?0 / n + ?0;
-    if (abs(n) < ?) return d3_geo_equirectangular;
-    function forward(?, ?) {
-      var ? = G - ?;
-      return [ ? * Math.sin(n * ?), G - ? * Math.cos(n * ?) ];
+  function d3_geo_conicEquidistant(φ0, φ1) {
+    var cosφ0 = Math.cos(φ0), n = φ0 === φ1 ? Math.sin(φ0) : (cosφ0 - Math.cos(φ1)) / (φ1 - φ0), G = cosφ0 / n + φ0;
+    if (abs(n) < ε) return d3_geo_equirectangular;
+    function forward(λ, φ) {
+      var ρ = G - φ;
+      return [ ρ * Math.sin(n * λ), G - ρ * Math.cos(n * λ) ];
     }
     forward.invert = function(x, y) {
-      var ?0_y = G - y;
-      return [ Math.atan2(x, ?0_y) / n, G - d3_sgn(n) * Math.sqrt(x * x + ?0_y * ?0_y) ];
+      var ρ0_y = G - y;
+      return [ Math.atan2(x, ρ0_y) / n, G - d3_sgn(n) * Math.sqrt(x * x + ρ0_y * ρ0_y) ];
     };
     return forward;
   }
   (d3.geo.conicEquidistant = function() {
     return d3_geo_conic(d3_geo_conicEquidistant);
   }).raw = d3_geo_conicEquidistant;
-  var d3_geo_gnomonic = d3_geo_azimuthal(function(cos?cos?) {
-    return 1 / cos?cos?;
+  var d3_geo_gnomonic = d3_geo_azimuthal(function(cosλcosφ) {
+    return 1 / cosλcosφ;
   }, Math.atan);
   (d3.geo.gnomonic = function() {
     return d3_geo_projection(d3_geo_gnomonic);
   }).raw = d3_geo_gnomonic;
-  function d3_geo_mercator(?, ?) {
-    return [ ?, Math.log(Math.tan(? / 4 + ? / 2)) ];
+  function d3_geo_mercator(λ, φ) {
+    return [ λ, Math.log(Math.tan(π / 4 + φ / 2)) ];
   }
   d3_geo_mercator.invert = function(x, y) {
-    return [ x, 2 * Math.atan(Math.exp(y)) - half? ];
+    return [ x, 2 * Math.atan(Math.exp(y)) - halfπ ];
   };
   function d3_geo_mercatorProjection(project) {
     var m = d3_geo_projection(project), scale = m.scale, translate = m.translate, clipExtent = m.clipExtent, clipAuto;
@@ -4750,7 +4750,7 @@
       var v = clipExtent.apply(m, arguments);
       if (v === m) {
         if (clipAuto = _ == null) {
-          var k = ? * scale(), t = translate();
+          var k = π * scale(), t = translate();
           clipExtent([ [ t[0] - k, t[1] - k ], [ t[0] + k, t[1] + k ] ]);
         }
       } else if (clipAuto) {
@@ -4769,19 +4769,19 @@
   (d3.geo.orthographic = function() {
     return d3_geo_projection(d3_geo_orthographic);
   }).raw = d3_geo_orthographic;
-  var d3_geo_stereographic = d3_geo_azimuthal(function(cos?cos?) {
-    return 1 / (1 + cos?cos?);
-  }, function(?) {
-    return 2 * Math.atan(?);
+  var d3_geo_stereographic = d3_geo_azimuthal(function(cosλcosφ) {
+    return 1 / (1 + cosλcosφ);
+  }, function(ρ) {
+    return 2 * Math.atan(ρ);
   });
   (d3.geo.stereographic = function() {
     return d3_geo_projection(d3_geo_stereographic);
   }).raw = d3_geo_stereographic;
-  function d3_geo_transverseMercator(?, ?) {
-    return [ Math.log(Math.tan(? / 4 + ? / 2)), -? ];
+  function d3_geo_transverseMercator(λ, φ) {
+    return [ Math.log(Math.tan(π / 4 + φ / 2)), -λ ];
   }
   d3_geo_transverseMercator.invert = function(x, y) {
-    return [ -y, 2 * Math.atan(Math.exp(x)) - half? ];
+    return [ -y, 2 * Math.atan(Math.exp(x)) - halfπ ];
   };
   (d3.geo.transverseMercator = function() {
     var projection = d3_geo_mercatorProjection(d3_geo_transverseMercator), center = projection.center, rotate = projection.rotate;
@@ -4922,7 +4922,7 @@
     }, previous = beach.P, next = beach.N, disappearing = [ beach ];
     d3_geom_voronoiDetachBeach(beach);
     var lArc = previous;
-    while (lArc.circle && abs(x - lArc.circle.x) < ? && abs(y - lArc.circle.cy) < ?) {
+    while (lArc.circle && abs(x - lArc.circle.x) < ε && abs(y - lArc.circle.cy) < ε) {
       previous = lArc.P;
       disappearing.unshift(lArc);
       d3_geom_voronoiDetachBeach(lArc);
@@ -4931,7 +4931,7 @@
     disappearing.unshift(lArc);
     d3_geom_voronoiDetachCircle(lArc);
     var rArc = next;
-    while (rArc.circle && abs(x - rArc.circle.x) < ? && abs(y - rArc.circle.cy) < ?) {
+    while (rArc.circle && abs(x - rArc.circle.x) < ε && abs(y - rArc.circle.cy) < ε) {
       next = rArc.N;
       disappearing.push(rArc);
       d3_geom_voronoiDetachBeach(rArc);
@@ -4955,19 +4955,19 @@
     var x = site.x, directrix = site.y, lArc, rArc, dxl, dxr, node = d3_geom_voronoiBeaches._;
     while (node) {
       dxl = d3_geom_voronoiLeftBreakPoint(node, directrix) - x;
-      if (dxl > ?) node = node.L; else {
+      if (dxl > ε) node = node.L; else {
         dxr = x - d3_geom_voronoiRightBreakPoint(node, directrix);
-        if (dxr > ?) {
+        if (dxr > ε) {
           if (!node.R) {
             lArc = node;
             break;
           }
           node = node.R;
         } else {
-          if (dxl > -?) {
+          if (dxl > -ε) {
             lArc = node.P;
             rArc = node;
-          } else if (dxr > -?) {
+          } else if (dxr > -ε) {
             lArc = node;
             rArc = node.N;
           } else {
@@ -5047,18 +5047,18 @@
       while (iHalfEdge < nHalfEdges) {
         end = halfEdges[iHalfEdge].end(), x3 = end.x, y3 = end.y;
         start = halfEdges[++iHalfEdge % nHalfEdges].start(), x2 = start.x, y2 = start.y;
-        if (abs(x3 - x2) > ? || abs(y3 - y2) > ?) {
-          halfEdges.splice(iHalfEdge, 0, new d3_geom_voronoiHalfEdge(d3_geom_voronoiCreateBorderEdge(cell.site, end, abs(x3 - x0) < ? && y1 - y3 > ? ? {
+        if (abs(x3 - x2) > ε || abs(y3 - y2) > ε) {
+          halfEdges.splice(iHalfEdge, 0, new d3_geom_voronoiHalfEdge(d3_geom_voronoiCreateBorderEdge(cell.site, end, abs(x3 - x0) < ε && y1 - y3 > ε ? {
             x: x0,
-            y: abs(x2 - x0) < ? ? y2 : y1
-          } : abs(y3 - y1) < ? && x1 - x3 > ? ? {
-            x: abs(y2 - y1) < ? ? x2 : x1,
+            y: abs(x2 - x0) < ε ? y2 : y1
+          } : abs(y3 - y1) < ε && x1 - x3 > ε ? {
+            x: abs(y2 - y1) < ε ? x2 : x1,
             y: y1
-          } : abs(x3 - x1) < ? && y3 - y0 > ? ? {
+          } : abs(x3 - x1) < ε && y3 - y0 > ε ? {
             x: x1,
-            y: abs(x2 - x1) < ? ? y2 : y0
-          } : abs(y3 - y0) < ? && x3 - x0 > ? ? {
-            x: abs(y2 - y0) < ? ? x2 : x0,
+            y: abs(x2 - x1) < ε ? y2 : y0
+          } : abs(y3 - y0) < ε && x3 - x0 > ε ? {
+            x: abs(y2 - y0) < ε ? x2 : x0,
             y: y0
           } : null), cell.site, null));
           ++nHalfEdges;
@@ -5080,7 +5080,7 @@
     if (lSite === rSite) return;
     var bx = cSite.x, by = cSite.y, ax = lSite.x - bx, ay = lSite.y - by, cx = rSite.x - bx, cy = rSite.y - by;
     var d = 2 * (ax * cy - ay * cx);
-    if (d >= -?2) return;
+    if (d >= -ε2) return;
     var ha = ax * ax + ay * ay, hc = cx * cx + cy * cy, x = (cy * ha - ay * hc) / d, y = (ax * hc - cx * ha) / d, cy = y + by;
     var circle = d3_geom_voronoiCirclePool.pop() || new d3_geom_voronoiCircle();
     circle.arc = arc;
@@ -5120,7 +5120,7 @@
     var edges = d3_geom_voronoiEdges, clip = d3_geom_clipLine(extent[0][0], extent[0][1], extent[1][0], extent[1][1]), i = edges.length, e;
     while (i--) {
       e = edges[i];
-      if (!d3_geom_voronoiConnectEdge(e, extent) || !clip(e) || abs(e.a.x - e.b.x) < ? && abs(e.a.y - e.b.y) < ?) {
+      if (!d3_geom_voronoiConnectEdge(e, extent) || !clip(e) || abs(e.a.x - e.b.x) < ε && abs(e.a.y - e.b.y) < ε) {
         e.a = e.b = null;
         edges.splice(i, 1);
       }
@@ -5491,8 +5491,8 @@
     function sites(data) {
       return data.map(function(d, i) {
         return {
-          x: Math.round(fx(d, i) / ?) * ?,
-          y: Math.round(fy(d, i) / ?) * ?,
+          x: Math.round(fx(d, i) / ε) * ε,
+          y: Math.round(fy(d, i) / ε) * ε,
           i: i
         };
       });
@@ -5879,7 +5879,7 @@
     };
   }
   function d3_ease_sin(t) {
-    return 1 - Math.cos(t * half?);
+    return 1 - Math.cos(t * halfπ);
   }
   function d3_ease_exp(t) {
     return Math.pow(2, 10 * (t - 1));
@@ -5890,9 +5890,9 @@
   function d3_ease_elastic(a, p) {
     var s;
     if (arguments.length < 2) p = .45;
-    if (arguments.length) s = p / ? * Math.asin(1 / a); else a = 1, s = p / 4;
+    if (arguments.length) s = p / τ * Math.asin(1 / a); else a = 1, s = p / 4;
     return function(t) {
-      return 1 + a * Math.pow(2, -10 * t) * Math.sin((t - s) * ? / p);
+      return 1 + a * Math.pow(2, -10 * t) * Math.sin((t - s) * τ / p);
     };
   }
   function d3_ease_back(s) {
@@ -6140,7 +6140,7 @@
           });
         });
       }
-      k = (? - padding * n) / k;
+      k = (τ - padding * n) / k;
       x = 0, i = -1;
       while (++i < n) {
         x0 = x, j = -1;
@@ -6628,7 +6628,7 @@
     return d3_layout_hierarchyRebind(partition, hierarchy);
   };
   d3.layout.pie = function() {
-    var value = Number, sort = d3_layout_pieSortByValue, startAngle = 0, endAngle = ?, padAngle = 0;
+    var value = Number, sort = d3_layout_pieSortByValue, startAngle = 0, endAngle = τ, padAngle = 0;
     function pie(data) {
       var n = data.length, values = data.map(function(d, i) {
         return +value.call(pie, d, i);
@@ -7421,10 +7421,10 @@
     };
   }
   d3.random = {
-    normal: function(�, ?) {
+    normal: function(µ, σ) {
       var n = arguments.length;
-      if (n < 2) ? = 1;
-      if (n < 1) � = 0;
+      if (n < 2) σ = 1;
+      if (n < 1) µ = 0;
       return function() {
         var x, y, r;
         do {
@@ -7432,7 +7432,7 @@
           y = Math.random() * 2 - 1;
           r = x * x + y * y;
         } while (!r || r > 1);
-        return � + ? * x * Math.sqrt(-2 * Math.log(r) / r);
+        return µ + σ * x * Math.sqrt(-2 * Math.log(r) / r);
       };
     },
     logNormal: function() {
@@ -7973,9 +7973,9 @@
   d3.svg.arc = function() {
     var innerRadius = d3_svg_arcInnerRadius, outerRadius = d3_svg_arcOuterRadius, cornerRadius = d3_zero, padRadius = d3_svg_arcAuto, startAngle = d3_svg_arcStartAngle, endAngle = d3_svg_arcEndAngle, padAngle = d3_svg_arcPadAngle;
     function arc() {
-      var r0 = Math.max(0, +innerRadius.apply(this, arguments)), r1 = Math.max(0, +outerRadius.apply(this, arguments)), a0 = startAngle.apply(this, arguments) - half?, a1 = endAngle.apply(this, arguments) - half?, da = Math.abs(a1 - a0), cw = a0 > a1 ? 0 : 1;
+      var r0 = Math.max(0, +innerRadius.apply(this, arguments)), r1 = Math.max(0, +outerRadius.apply(this, arguments)), a0 = startAngle.apply(this, arguments) - halfπ, a1 = endAngle.apply(this, arguments) - halfπ, da = Math.abs(a1 - a0), cw = a0 > a1 ? 0 : 1;
       if (r1 < r0) rc = r1, r1 = r0, r0 = rc;
-      if (da >= ??) return circleSegment(r1, cw) + (r0 ? circleSegment(r0, 1 - cw) : "") + "Z";
+      if (da >= τε) return circleSegment(r1, cw) + (r0 ? circleSegment(r0, 1 - cw) : "") + "Z";
       var rc, cr, rp, ap, p0 = 0, p1 = 0, x0, y0, x1, y1, x2, y2, x3, y3, path = [];
       if (ap = (+padAngle.apply(this, arguments) || 0) / 2) {
         rp = padRadius === d3_svg_arcAuto ? Math.sqrt(r0 * r0 + r1 * r1) : +padRadius.apply(this, arguments);
@@ -7988,7 +7988,7 @@
         y0 = r1 * Math.sin(a0 + p1);
         x1 = r1 * Math.cos(a1 - p1);
         y1 = r1 * Math.sin(a1 - p1);
-        var l1 = Math.abs(a1 - a0 - 2 * p1) <= ? ? 0 : 1;
+        var l1 = Math.abs(a1 - a0 - 2 * p1) <= π ? 0 : 1;
         if (p1 && d3_svg_arcSweep(x0, y0, x1, y1) === cw ^ l1) {
           var h1 = (a0 + a1) / 2;
           x0 = r1 * Math.cos(h1);
@@ -8003,7 +8003,7 @@
         y2 = r0 * Math.sin(a1 - p0);
         x3 = r0 * Math.cos(a0 + p0);
         y3 = r0 * Math.sin(a0 + p0);
-        var l0 = Math.abs(a0 - a1 + 2 * p0) <= ? ? 0 : 1;
+        var l0 = Math.abs(a0 - a1 + 2 * p0) <= π ? 0 : 1;
         if (p0 && d3_svg_arcSweep(x2, y2, x3, y3) === 1 - cw ^ l0) {
           var h0 = (a0 + a1) / 2;
           x2 = r0 * Math.cos(h0);
@@ -8013,10 +8013,10 @@
       } else {
         x2 = y2 = 0;
       }
-      if (da > ? && (rc = Math.min(Math.abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments))) > .001) {
+      if (da > ε && (rc = Math.min(Math.abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments))) > .001) {
         cr = r0 < r1 ^ cw ? 0 : 1;
         var rc1 = rc, rc0 = rc;
-        if (da < ?) {
+        if (da < π) {
           var oc = x3 == null ? [ x2, y2 ] : x1 == null ? [ x0, y0 ] : d3_geom_polygonIntersect([ x0, y0 ], [ x3, y3 ], [ x1, y1 ], [ x2, y2 ]), ax = x0 - oc[0], ay = y0 - oc[1], bx = x1 - oc[0], by = y1 - oc[1], kc = 1 / Math.sin(Math.acos((ax * bx + ay * by) / (Math.sqrt(ax * ax + ay * ay) * Math.sqrt(bx * bx + by * by))) / 2), lc = Math.sqrt(oc[0] * oc[0] + oc[1] * oc[1]);
           rc0 = Math.min(rc, (r0 - lc) / (kc - 1));
           rc1 = Math.min(rc, (r1 - lc) / (kc + 1));
@@ -8089,7 +8089,7 @@
       return arc;
     };
     arc.centroid = function() {
-      var r = (+innerRadius.apply(this, arguments) + +outerRadius.apply(this, arguments)) / 2, a = (+startAngle.apply(this, arguments) + +endAngle.apply(this, arguments)) / 2 - half?;
+      var r = (+innerRadius.apply(this, arguments) + +outerRadius.apply(this, arguments)) / 2, a = (+startAngle.apply(this, arguments) + +endAngle.apply(this, arguments)) / 2 - halfπ;
       return [ Math.cos(a) * r, Math.sin(a) * r ];
     };
     return arc;
@@ -8344,7 +8344,7 @@
     var tangents = [], d, a, b, s, m = d3_svg_lineFiniteDifferences(points), i = -1, j = points.length - 1;
     while (++i < j) {
       d = d3_svg_lineSlope(points[i], points[i + 1]);
-      if (abs(d) < ?) {
+      if (abs(d) < ε) {
         m[i] = m[i + 1] = 0;
       } else {
         a = m[i] / d;
@@ -8378,7 +8378,7 @@
     while (++i < n) {
       point = points[i];
       r = point[0];
-      a = point[1] - half?;
+      a = point[1] - halfπ;
       point[0] = r * Math.cos(a);
       point[1] = r * Math.sin(a);
     }
@@ -8479,7 +8479,7 @@
       return "M" + s.p0 + arc(s.r, s.p1, s.a1 - s.a0) + (equals(s, t) ? curve(s.r, s.p1, s.r, s.p0) : curve(s.r, s.p1, t.r, t.p0) + arc(t.r, t.p1, t.a1 - t.a0) + curve(t.r, t.p1, s.r, s.p0)) + "Z";
     }
     function subgroup(self, f, d, i) {
-      var subgroup = f.call(self, d, i), r = radius.call(self, subgroup, i), a0 = startAngle.call(self, subgroup, i) - half?, a1 = endAngle.call(self, subgroup, i) - half?;
+      var subgroup = f.call(self, d, i), r = radius.call(self, subgroup, i), a0 = startAngle.call(self, subgroup, i) - halfπ, a1 = endAngle.call(self, subgroup, i) - halfπ;
       return {
         r: r,
         a0: a0,
@@ -8492,7 +8492,7 @@
       return a.a0 == b.a0 && a.a1 == b.a1;
     }
     function arc(r, p, a) {
-      return "A" + r + "," + r + " 0 " + +(a > ?) + ",1 " + p;
+      return "A" + r + "," + r + " 0 " + +(a > π) + ",1 " + p;
     }
     function curve(r0, p0, r1, p1) {
       return "Q 0,0 " + p1;
@@ -8569,7 +8569,7 @@
   };
   function d3_svg_diagonalRadialProjection(projection) {
     return function() {
-      var d = projection.apply(this, arguments), r = d[0], a = d[1] - half?;
+      var d = projection.apply(this, arguments), r = d[0], a = d[1] - halfπ;
       return [ r * Math.cos(a), r * Math.sin(a) ];
     };
   }
@@ -8597,7 +8597,7 @@
     return "circle";
   }
   function d3_svg_symbolCircle(size) {
-    var r = Math.sqrt(size / ?);
+    var r = Math.sqrt(size / π);
     return "M0," + r + "A" + r + "," + r + " 0 1,1 0," + -r + "A" + r + "," + r + " 0 1,1 0," + r + "Z";
   }
   var d3_svg_symbols = d3.map({
@@ -8983,7 +8983,7 @@
       g.each(function() {
         var g = d3.select(this);
         var scale0 = this.__chart__ || scale, scale1 = this.__chart__ = scale.copy();
-        var ticks = tickValues == null ? scale1.ticks ? scale1.ticks.apply(scale1, tickArguments_) : scale1.domain() : tickValues, tickFormat = tickFormat_ == null ? scale1.tickFormat ? scale1.tickFormat.apply(scale1, tickArguments_) : d3_identity : tickFormat_, tick = g.selectAll(".tick").data(ticks, scale1), tickEnter = tick.enter().insert("g", ".domain").attr("class", "tick").style("opacity", ?), tickExit = d3.transition(tick.exit()).style("opacity", ?).remove(), tickUpdate = d3.transition(tick.order()).style("opacity", 1), tickSpacing = Math.max(innerTickSize, 0) + tickPadding, tickTransform;
+        var ticks = tickValues == null ? scale1.ticks ? scale1.ticks.apply(scale1, tickArguments_) : scale1.domain() : tickValues, tickFormat = tickFormat_ == null ? scale1.tickFormat ? scale1.tickFormat.apply(scale1, tickArguments_) : d3_identity : tickFormat_, tick = g.selectAll(".tick").data(ticks, scale1), tickEnter = tick.enter().insert("g", ".domain").attr("class", "tick").style("opacity", ε), tickExit = d3.transition(tick.exit()).style("opacity", ε).remove(), tickUpdate = d3.transition(tick.order()).style("opacity", 1), tickSpacing = Math.max(innerTickSize, 0) + tickPadding, tickTransform;
         var range = d3_scaleRange(scale1), path = g.selectAll(".domain").data([ 0 ]), pathUpdate = (path.enter().append("path").attr("class", "domain"), 
         d3.transition(path));
         tickEnter.append("line");
