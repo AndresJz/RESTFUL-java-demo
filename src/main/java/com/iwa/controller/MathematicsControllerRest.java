@@ -57,31 +57,5 @@ public class MathematicsControllerRest {
         mathematicsService.updateMathematic(mathematic); 
         return mathematic;
     }
-
     
-    
-    /*
-        @RequestMapping(value = "/deleteMathematic", method = RequestMethod.GET)
-    public ModelAndView deleteMathematic(HttpServletRequest request) {
-        int mathematicId = Integer.parseInt(request.getParameter("id"));
-        mathematicsService.deleteMathematic(mathematicId);
-        return new ModelAndView("redirect:/");
-    }
- 
-    @RequestMapping(value = "/editMathematic", method = RequestMethod.GET)
-    public ModelAndView editMathematic(HttpServletRequest request) {
-        int mathematicId = Integer.parseInt(request.getParameter("id"));
-        Mathematics mathematic = mathematicsService.getMathematic(mathematicId);
-        ModelAndView model = new ModelAndView("form.jsp");
-        model.addObject("mathematic", mathematic);
- 
-        return model;
-    }
-    */
 }
-
-
-
-
-
-
