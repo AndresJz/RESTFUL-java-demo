@@ -82,7 +82,7 @@
     </div>
     
 
-    <script src="http://d3js.org/d3.v3.js"></script>
+    <script src="/resources/js/d3.v3.js"></script>
     <script>
         function graphMathematics(data){
             /*
