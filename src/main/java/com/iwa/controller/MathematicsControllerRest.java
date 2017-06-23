@@ -18,24 +18,46 @@ import com.iwa.model.Mathematics;
 import com.iwa.service.MathematicsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@RestController 
+@RestController
+@RequestMapping("/mathematics")
 public class MathematicsControllerRest { 
     
     @Autowired
     private MathematicsService mathematicsService;
     
-    @RequestMapping(value = "/Mathematics", method = RequestMethod.GET,headers="Accept=application/json") 
+    @RequestMapping(value = "/get", method = RequestMethod.GET,headers="Accept=application/json") 
     public List<Mathematics> getMathematics() { 
         List<Mathematics> listMathematics = mathematicsService.getAllMathematics();        
         return listMathematics;
     }
-    
-    @RequestMapping(value = "/Mathematics/{id}", method = RequestMethod.GET,headers="Accept=application/json") 
+
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET,headers="Accept=application/json") 
     public Mathematics getMathematic(@PathVariable int id) { 
         Mathematics mathematic = mathematicsService.getMathematic(id);
         return mathematic;
     } 
+    
+    @RequestMapping(value = "/insert", method = RequestMethod.GET,headers="Accept=application/json") 
+    public Mathematics insertMathematic(@RequestBody Mathematics mathematic) { 
+        mathematicsService.addMathematic(mathematic);
+      
+        return mathematic;
+    } 
+    
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET,headers="Accept=application/json") 
+    public int deleteMathematic(@PathVariable int id) { 
+        mathematicsService.deleteMathematic(id);
+        return id;
+    } 
+    
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET,headers="Accept=application/json") 
+    public Mathematics updateMathematic(@RequestBody Mathematics mathematic) { 
+        mathematicsService.updateMathematic(mathematic); 
+        return mathematic;
+    }
+
     
     
     /*

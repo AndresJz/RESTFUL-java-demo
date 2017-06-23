@@ -23,8 +23,7 @@ import org.testng.asserts.SoftAssert;
  *
  * @author Andres
  */
-public class MathematicsControllerTest {
-    
+public class MathematicsControllerTest { 
     
     @Test 
     public void getHello() {
